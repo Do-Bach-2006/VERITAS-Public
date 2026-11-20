@@ -4,14 +4,14 @@
 
 Anonymous Authors
 
-VERITAS is a validity-constrained framework that couples broad transformation coverage with search-time operational-validity enforcement for problem-space adversarial malware generation. It exposes 17 realizable actions spanning PE structure and metadata, code and control flow, and runtime-observable API behavior.
+VERITAS is a validity-constrained framework that couples broad transformation coverage with search-time operational-validity enforcement for problem-space adversarial malware generation. It exposes 19 realizable actions spanning PE structure and metadata, code and control flow, and runtime-observable API behavior.
 
 This repository accompanies the research paper and is intended to support research reproducibility.
 
 ## Paper Highlights
 
 - VERITAS presents a validity-constrained framework that couples broad transformation coverage with search-time operational-validity enforcement.
-- It introduces a unified 17-action transformation space spanning PE structure and metadata, code/CFG, and runtime-observable behavior.
+- It introduces a unified 19-action transformation space spanning PE structure and metadata, code/CFG, and runtime-observable behavior.
 - Search-time operational-validity enforcement uses a fail-closed validity-gated candidate admission mechanism assessing execution viability and behavioral preservation.
 - Evaluated across nine held-out learning-based detectors, VERITAS achieves a mean validity-conditioned attack success rate of 23.13%, reaching 73.05% on RTF-BERT.
 - Variants optimized against a single local surrogate transfer to unseen operational targets, achieving 23.16% Valid-ASR against ClamAV and 14.89% against Microsoft Defender.
@@ -20,9 +20,9 @@ This repository accompanies the research paper and is intended to support resear
 
 The paper formulates problem-space adversarial malware generation as malware-to-benign evasion subject to explicit operational-validity requirements. During sequential optimization, each tentative candidate is evaluated for execution viability and behavioral preservation using complementary API and low-level system-call evidence.
 
-VERITAS exposes 17 realizable actions across three complementary surfaces:
+VERITAS exposes 19 realizable actions across three complementary surfaces:
 
-- **PE structure and metadata (9 actions)**: headers, DOS stub, sections, imports, overlays, certificate/debug directories, checksums, and timestamps.
+- **PE structure and metadata (11 actions)**: headers, DOS stub, sections, imports, overlays, certificate/debug directories, checksums, and timestamps.
 - **Code, control flow, and whole-binary transformations (7 actions)**: instruction rewriting, code randomization, lift-transform-recompile artifacts (RetDec + OLLVM), call-edge redividing, semantic-NOP insertion, external packing (UPX), and encryption loaders (Darkarmour).
 - **Runtime-observable behavior (1 action)**: observable API footprint modification through lightweight trampoline redirection logic.
 

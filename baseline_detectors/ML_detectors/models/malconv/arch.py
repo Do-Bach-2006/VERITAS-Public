@@ -79,5 +79,5 @@ class MalConv(nn.Module):
         # Layer 5: Fully connected classifier
         logits = self.fc(pooled)
 
-        # Trả về cả 2 để file train xử lý DeCov Loss
+        # Return both logits and pooled features for DeCov Loss during training
         return logits, pooled

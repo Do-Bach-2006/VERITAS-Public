@@ -135,7 +135,7 @@ def run_all():
         print("[!] No Training data found.")
         return
 
-    # ---- Validation split 80/20 (stratified để giữ tỷ lệ benign/malware) ----
+    # ---- Validation split 80/20 (stratified to preserve benign/malware ratio) ----
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_full, y_train_full,
         test_size=0.2,
@@ -153,15 +153,15 @@ def run_all():
         "objective": "binary",
         "metric": "auc",
 
-        # 1. Complexity control — chống overfit
+        # 1. Complexity control — prevent overfitting
         "num_leaves": 2048,           # restored standard EMBER 
         "max_depth": 15,              # restored standard EMBER
         "min_data_in_leaf": 50,       # restored standard EMBER
 
-        # 2. Randomization — đa dạng hóa cây
+        # 2. Randomization — tree diversity
         "feature_fraction": 0.5,   # 50%
         "bagging_fraction": 0.8,   # 80%
-        "bagging_freq": 1,         # REQUIRED: bagging_fraction chỉ hoạt động khi freq > 0
+        "bagging_freq": 1,         # REQUIRED: bagging_fraction is active only when freq > 0
 
         "learning_rate": 0.05,
         "verbose": -1,

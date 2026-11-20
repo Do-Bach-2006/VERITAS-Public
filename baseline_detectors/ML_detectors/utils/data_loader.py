@@ -30,14 +30,14 @@ class NPZMalwareDataset(Dataset):
         return len(self.labels)
 
     def __getitem__(self, idx):
-        # 1. Trích xuất đặc trưng của MỘT mẫu duy nhất (Rất nhẹ cho RAM)
+        # 1. Extract features for a single sample on the fly (memory-efficient)
         raw_feature = self.features[idx]
 
         # --- FEATURE ENGINEERING GOES HERE ---
         # Example: Convert OpCodes to a dummy tensor (Replace with your actual NLP/CNN embedding logic)
         x_tensor = torch.zeros(100)  # Placeholder for the processed feature
 
-        # 2. Xử lý Nhãn dựa trên label_mapping từ JSON
+        # 2. Map string label to integer ID using label_mapping from JSON
         string_label = self.labels[idx]
         y_label = self.label_mapping.get(string_label, 0)  # Default to 0 if unknown
         y_tensor = torch.tensor(y_label, dtype=torch.long)

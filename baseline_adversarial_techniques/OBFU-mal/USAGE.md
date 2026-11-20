@@ -59,7 +59,7 @@ Auto-prepare from a raw test dataset before generating AEs:
 python scripts/evaluate.py --test_dir ./Test --model artifacts/models/dqn_latest.pt
 ```
 
-Nếu muốn chắc chắn sạch hoàn toàn thư mục mẫu trước khi nạp mới:
+To completely clean the sample directory before loading new samples:
 ```bash
 python scripts/train.py --train_dir ./Adv_agent --recreate_sample_dir
 python scripts/evaluate.py --test_dir ./Test --recreate_sample_dir --model artifacts/models/dqn_latest.pt

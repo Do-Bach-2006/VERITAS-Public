@@ -2,7 +2,7 @@ import json
 import os
 
 def main():
-    base_dir = '/home/gnomeright/programming/nghien_cuu/new_results/dqeaf_handles/dqeaf'
+    base_dir = './results/dqeaf'
     
     with open(os.path.join(base_dir, 'dqeaf_integrity_functionality_reports.json'), 'r') as f:
         base_report = json.load(f)

@@ -4,7 +4,7 @@ import pyclamd
 from pathlib import Path
 
 # --- Configuration ---
-DATASETS_DIR = r"C:\Users\Admin\Desktop\nghien_cuu_fiam\datasets"
+DATASETS_DIR = r"C:\datasets"
 # Save results locally in the same directory as the script
 CURRENT_DIR = Path(__file__).parent.absolute()
 PROGRESS_FILE = str(CURRENT_DIR / "clamav_results.json")

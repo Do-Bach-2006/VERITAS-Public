@@ -5,7 +5,6 @@ from capstone import Cs, CS_ARCH_X86, CS_MODE_32, CS_MODE_64
 from tqdm import tqdm
 
 
-# Thực thi đoạn code
 TARGET_DIRECTORY = "malguise"
 OUTPUT_FILE = "malguise_static.npz"
 
@@ -19,20 +18,20 @@ def extract_all_features(target_dir, output_filepath):
         "api_pefile": [],
     }
 
-    # Cấu hình Capstone disassembler cho x86 (32-bit) và x86_64 (64-bit)
+    # Configure Capstone disassembler for x86 (32-bit) and x86_64 (64-bit)
     md_32 = Cs(CS_ARCH_X86, CS_MODE_32)
     md_64 = Cs(CS_ARCH_X86, CS_MODE_64)
     md_32.skipdata = True
     md_64.skipdata = True
 
-    # Duyệt qua các thư mục con (Benign, Locker, Mediyes,...)
+    # Iterate through family subdirectories (Benign, Locker, Mediyes, ...)
     for label in os.listdir(target_dir):
         label_dir = os.path.join(target_dir, label)
 
         if not os.path.isdir(label_dir):
             continue
 
-        print(f"\n[*] Đang xử lý nhãn (label): {label}")
+        print(f"\n[*] Processing label: {label}")
 
         for filename in tqdm(os.listdir(label_dir)):
             filepath = os.path.join(label_dir, filename)
@@ -40,18 +39,18 @@ def extract_all_features(target_dir, output_filepath):
                 continue
 
             # ==========================================
-            # 1. TRÍCH XUẤT RAW BYTE
+            # 1. EXTRACT RAW BYTES
             # ==========================================
             try:
                 with open(filepath, "rb") as f:
                     raw_data = f.read()
                 raw_byte_arr = np.frombuffer(raw_data, dtype=np.uint8)
             except Exception as e:
-                print(f"[!] Lỗi đọc file {filename}: {e}")
+                print(f"[!] Error reading file {filename}: {e}")
                 continue
 
             # ==========================================
-            # 2. TRÍCH XUẤT OP CODE & STATIC API
+            # 2. EXTRACT OPCODES & STATIC APIS
             # ==========================================
             opcodes = []
             apis = []
@@ -59,7 +58,7 @@ def extract_all_features(target_dir, output_filepath):
             try:
                 pe = pefile.PE(filepath)
 
-                # --- A. Lấy OP Code ---
+                # --- A. Extract Opcodes ---
                 md = md_64 if pe.FILE_HEADER.Machine == 0x8664 else md_32
                 for section in pe.sections:
                     if section.Characteristics & 0x20000000:  # Executable
@@ -67,25 +66,22 @@ def extract_all_features(target_dir, output_filepath):
                         for instruction in md.disasm(code, section.VirtualAddress):
                             opcodes.append(instruction.mnemonic)
 
-                # --- B. Lấy Static API ---
-                # Kiểm tra xem file PE có bảng Import không
+                # --- B. Extract Static APIs ---
                 if hasattr(pe, "DIRECTORY_ENTRY_IMPORT"):
                     for entry in pe.DIRECTORY_ENTRY_IMPORT:
                         for imp in entry.imports:
-                            # Tên API có thể bị null hoặc chứa ký tự rác
                             if imp.name is not None:
                                 apis.append(imp.name.decode("utf-8", errors="ignore"))
 
             except Exception:
-                # Bỏ qua nếu file PE bị hỏng header hoặc mã hóa
+                # Skip if PE headers are malformed or encrypted
                 pass
 
-            # Ghép list thành chuỗi cách nhau bởi khoảng trắng
             opcode_str = " ".join(opcodes)
             api_str = " ".join(apis)
 
             # ==========================================
-            # 3. LƯU VÀO DICTIONARY
+            # 3. STORE IN DICTIONARY
             # ==========================================
             data_dict["name"].append(filename)
             data_dict["label"].append(label)
@@ -94,9 +90,9 @@ def extract_all_features(target_dir, output_filepath):
             data_dict["api_pefile"].append(api_str)
 
     # ==========================================
-    # 4. NÉN VÀ XUẤT RA FILE .NPZ
+    # 4. COMPRESS AND EXPORT TO .NPZ
     # ==========================================
-    print(f"\n[*] Đang lưu dữ liệu vào {output_filepath}...")
+    print(f"\n[*] Saving extracted data to {output_filepath}...")
     np.savez_compressed(
         output_filepath,
         name=np.array(data_dict["name"]),
@@ -105,7 +101,7 @@ def extract_all_features(target_dir, output_filepath):
         op_code=np.array(data_dict["op_code"], dtype=object),
         api_pefile=np.array(data_dict["api_pefile"], dtype=object),
     )
-    print(f"[+] Hoàn tất! Đã lưu thành công tại {output_filepath}")
+    print(f"[+] Done! Saved archive to {output_filepath}")
 
 
 extract_all_features(TARGET_DIRECTORY, OUTPUT_FILE)

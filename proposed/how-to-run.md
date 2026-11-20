@@ -181,7 +181,7 @@ python3 scripts/test.py \
 
 View summary metrics:
 ```bash
-python3 -m json.tool outputs/aes_test_run_002/summary_metrics.json
+python3 -m json.tool outputs/aes_test_run_002/metrics.json
 ```
 
 ---

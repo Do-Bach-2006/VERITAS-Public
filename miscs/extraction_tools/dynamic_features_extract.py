@@ -23,22 +23,21 @@ import pyzipper
 # ==============================================================================
 # 1. CLUSTER + CREDENTIALS
 # ==============================================================================
-# Because my cape setup does not clear the whole analysis results ( it build up over time)
-# SO i need to have this autoclean up feature setting up for the script to manually erase past analysis data.
-# TO prevent filling up spaces !
+# Automated cleanup feature to erase past analysis data between batches
+# and prevent sandbox storage exhaustion.
 
-API_TOKEN = "<YourAPITokenHere"
-SSH_USER = "username"
-SSH_PASS = "passwd"
+API_TOKEN = "<YOUR_CAPE_API_TOKEN>"
+SSH_USER = "<YOUR_SSH_USER>"
+SSH_PASS = "<YOUR_SSH_PASSWORD>"
 CAPE_DIR = "/opt/CAPEv2"
 
 IP_LIST = [
-    "192.168.2.122",
-    "192.168.2.124",
-    "192.168.2.116",
-    "192.168.2.125",
-    "192.168.2.129",
-    "192.168.2.131",
+    "<YOUR_CAPE_NODE_1_IP>",
+    "<YOUR_CAPE_NODE_2_IP>",
+    "<YOUR_CAPE_NODE_3_IP>",
+    "<YOUR_CAPE_NODE_4_IP>",
+    "<YOUR_CAPE_NODE_5_IP>",
+    "<YOUR_CAPE_NODE_6_IP>",
 ]
 # list of your CAPE servers, you can add here
 
@@ -60,10 +59,10 @@ BATCH_SIZE = len(SERVERS)
 # ==============================================================================
 # 2. DATASETS
 # ==============================================================================
-DATASET_ROOT = "/home/cape/Downloads/new_proposal"
+DATASET_ROOT = "./datasets"
 DATASETS = ["malguise"]
 
-FAIL_PATH = "/home/cape/Downloads/new_proposal/corrupted_samples/"
+FAIL_PATH = "./datasets/corrupted_samples/"
 
 
 def dataset_paths(dataset_name):

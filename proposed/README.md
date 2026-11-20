@@ -33,7 +33,7 @@ The framework operates across the following core components:
   - *Layer 3 (C++ Sequence Aligner)*: C++ Smith-Waterman alignment with sensitive API anchoring (`wb = 20`) and difference pruning (`td = 0.02`).
 - **Asynchronous Worker Infrastructure**: Redis-backed queues dispatching parallel feature extraction tasks across dedicated workers (`API`, `Syscall`, `Angr`, `Static`).
 
-The framework is evaluated on 4,785 PE malware and benign samples across five prominent malware families:
+The framework is evaluated on a corpus of 9,970 PE executables (1,000 benign and 8,970 malware samples across five prominent malware families, with 2,991 samples in the adversarial-optimization split and 1,994 samples—1,794 malware and 200 benign—in the holdout evaluation split):
 
 - Locker (Ransomware)
 - Mediyes (Trojan / Adware)
@@ -191,7 +191,7 @@ data/dataset/
 |   |-- Zbot/           (630)   # Banking Trojan
 |   `-- Zeroaccess/     (207)   # Rootkit / Botnet
 `-- Test/                       # Evaluation split (1,994 total samples)
-    |-- Benign/         (200)   # Clean evaluation `binaries
+    |-- Benign/         (200)   # Clean evaluation binaries
     |-- Locker/          (66)
     |-- Mediyes/        (290)
     |-- Winwebsec/      (880)
@@ -376,7 +376,7 @@ python3 scripts/test.py \
 View summary evaluation metrics:
 
 ```bash
-python3 -m json.tool outputs/aes_test_run_002/summary_metrics.json
+python3 -m json.tool outputs/aes_test_run_002/metrics.json
 ```
 
 ### 4. Parallel Multi-Shard Evaluation
@@ -428,16 +428,16 @@ The training and evaluation pipelines produce structured metrics, per-episode JS
 
 ```text
 outputs/aes_test_run_002/
-|-- summary_metrics.json       # Consolidated evasion rates, valid execution rates, and step counts
+|-- metrics.json               # Consolidated evasion rates, valid execution rates, and step counts
 |-- traces.json                # Complete trace collection across all evaluated samples
 |-- traces/                    # Individual per-sample step-by-step diagnostic JSON files
-`-- evasive_samples/           # Generated problem-space adversarial PE binaries
+`-- aes/                       # Generated problem-space adversarial PE binaries
 ```
 
 To reproduce the paper's experimental findings:
 
 1. Execute evaluation on the holdout `Test/` dataset using `scripts/test.py` across the evaluated surrogate models.
-2. Review `summary_metrics.json` for family-level evasion rates, valid execution rates, and average perturbation lengths.
+2. Review `metrics.json` (or `metrics/<run_id>.json` for per-shard runs) for family-level evasion rates, valid execution rates, and average perturbation lengths.
 3. Compare the generated adversarial binaries against baseline detection engines to verify black-box transferability.
 
 ---
@@ -449,7 +449,7 @@ The following summary highlights key experimental findings reported in the paper
 - **Generation Coverage & Operational Validity**: Under the validity-constrained search policy, VERITAS produces finalized candidate outputs for 1,203 out of 1,794 holdout malware samples (67.06% Generation Coverage) with 100% joint operational validity ($V_{\mathrm{VER}} = 100\%$).
 - **Cross-Target Attack Effectiveness**: Across nine held-out learning-based detectors, VERITAS achieves an unweighted mean Validity-Conditioned Attack Success Rate ($\mathrm{V\mbox{-}ASR}^{\mathrm{VER}}$) of **23.13%**, outperforming evaluated baselines (GAMMA 11.48%, OBFU-mal 10.38%, GAPGAN 1.12%, MAB-Malware 0.66%).
 - **Target-Specific Attack Breadth**: Reaches **73.05%** $\mathrm{V\mbox{-}ASR}^{\mathrm{VER}}$ against sequence-oriented RTF-BERT (1,198 of 1,640 detected samples), **37.17%** on Multiclass M-Attn-Health, **34.47%** on Binary M-Attn-Health, **15.37%** on Multiclass MalConv, and **14.10%** on SeqConvAttn.
-- **Operational Black-Box Transferability**: Variants optimized against a single local surrogate transfer effectively to unseen commercial operational targets without query access, achieving **23.16% Valid-ASR against ClamAV** and **14.89% against Microsoft Defender**, with a mean of **10.36%** across VirusTotal engine-detection-ratio (TER) thresholds.
+- **Operational Black-Box Transferability**: Variants optimized against a single local surrogate transfer effectively to unseen commercial operational targets without query access, achieving **23.16% Valid-ASR against ClamAV** and **14.89% against Microsoft Defender**, with a mean of **16.42%** across VirusTotal engine-detection-ratio (TER) thresholds (10%–80%).
 - **Multi-Surface Transformation Synergy**: Multi-surface search coverage across headers, sections, code structure, CFG edges, and binary lifting is essential; restricting the action space to metadata-only or instruction-only subsets significantly degrades attack effectiveness across diverse detector representations.
 
 ---
@@ -466,27 +466,19 @@ The environment relies on an event-driven asynchronous pipeline with Redis as th
 **3. Reward Calculation**: Applies the parameterized mathematical objective function defined in `reward_calculator.py`.
 
 ### Sandbox Infrastructure
-The system distributes sandbox analysis across 4 CAPEv2 KVM nodes using Atomic Round-Robin. Nodes are automatically cleaned via SSH between episodes to prevent contamination.
+The system distributes sandbox analysis across a cluster of CAPEv2 KVM nodes (4–6 nodes configured in `assets/cape_nodes*.json`) using Atomic Round-Robin. Nodes are automatically cleaned via SSH between episodes to prevent contamination.
 
 ### Known Architectural Notes
 - **angr Compatibility**: `worker_angr.py` spawns a subprocess pointing to the separate `func_venv` because `angr` is incompatible with Python 3.14. 
 
-<<<<<<< HEAD
 ---
 
 ## Authors / Maintainers
 
-- Nguyen Huu Quyen, University of Information Technology, VNU-HCM (`quyennh@uit.edu.vn`)
-- Dinh Nguyen Tuan Dat, University of Information Technology, VNU-HCM (`25520260@gm.uit.edu.vn`)
-- Do Bach, University of Information Technology, VNU-HCM (`25520110@gm.uit.edu.vn`)
-- Van-Hau Pham, University of Information Technology, VNU-HCM (`haupv@uit.edu.vn`)
-
-Corresponding Author: **Van-Hau Pham** (`haupv@uit.edu.vn`).
+- Anonymous Authors
 
 ---
 
-=======
->>>>>>> upstream/main
 ## License
 
 This project is licensed under the Apache License 2.0. See the `LICENSE` file for details.

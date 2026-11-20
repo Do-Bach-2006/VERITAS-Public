@@ -62,3 +62,8 @@ data/benign_content/*
 # Uncompressed surrogate weights (>100MB)
 **/weights/m_attn_health_multi.pth
 !**/weights/m_attn_health_multi.pth.xz
+
+# Local bibliography and paper files
+bib.bib
+*.pdf
+ANONYMITY_FIX_NOTES.md

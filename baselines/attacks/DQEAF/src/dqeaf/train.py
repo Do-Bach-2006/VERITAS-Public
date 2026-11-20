@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import random
@@ -155,7 +155,7 @@ class Trainer:
             state, _ = self.env.reset()
             episode_reward = 0.0
             last_loss = 0.0
-            print(f"[>] Bắt đầu Episode {episode}/{self.cfg.D}...")
+            print(f"[>] Starting Episode {episode}/{self.cfg.D}...")
 
             for _t in range(1, self.cfg.T + 1):
                 epsilon = self._epsilon(self.global_step)

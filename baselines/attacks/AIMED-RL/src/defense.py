@@ -73,7 +73,6 @@ class Defense:
     def attack_statistical_model(malware_input, noise):
         """
             Define statistical model to approximate noise / perturbations.
-            Author: Luis Munoz Gonzalez
 
             Input:
                 malware_input: batch of malware examples

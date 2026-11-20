@@ -4,13 +4,13 @@ import requests
 import numpy as np
 
 # --- CUCKOO CONFIG (Primary) ---
-CUCKOO_HOST = "http://192.168.2.123:8090"
-CUCKOO_TOKEN = "4tnVmJAddAjA7AUuGR6yvA"
+CUCKOO_HOST = "http://<YOUR_CUCKOO_HOST>:8090"
+CUCKOO_TOKEN = "<YOUR_CUCKOO_API_TOKEN>"
 CUCKOO_HEADERS = {"Authorization": f"Bearer {CUCKOO_TOKEN}"}
 
 # --- CAPE CONFIG (Fallback) ---
-CAPE_HOST = "http://192.168.2.118:8000"
-CAPE_TOKEN = "5f42b8083e6a6e95bd32ff2037ae323252dcb8ff"
+CAPE_HOST = "http://<YOUR_CAPE_HOST>:8000"
+CAPE_TOKEN = "<YOUR_CAPE_API_TOKEN>"
 CAPE_HEADERS = {"Authorization": f"Token {CAPE_TOKEN}"}
 
 

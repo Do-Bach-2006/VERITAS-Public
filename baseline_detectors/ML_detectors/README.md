@@ -11,17 +11,18 @@ This standalone package encapsulates all essential model architectures, a dynami
 - **Smart Resource Management:** Automatically detects available hardware (GPU/CUDA, TPU/XLA, MPS, or CPU) and allocates system resources efficiently to prevent OOM errors.
 - **Evasion Testing:** Native support for evaluating model robustness against adversarial samples and evasion techniques.
 
-## Supported Models
-This framework includes several state-of-the-art architectures for static malware detection:
+## Supported Models (9 Target Detector Configurations)
+This framework includes the nine learning-based detector configurations (3 binary and 6 multiclass) evaluated in the paper:
 
-1. **MalConv (`malconv`)**: Standard CNN-based architecture for raw byte analysis.
-2. **SeqConvAttn (`seqconvattn`)**: Sequence-based convolutional network with attention mechanisms.
-3. **IMCFN (`imcfn`)**: Image-based malware classification network.
-4. **Binary MalConv (`binary_malconv`)**: A variant of MalConv optimized for binary classification.
-5. **MultiView CNN (`multiview_cnn`)**: Analyzes multiple representations of malware samples.
-6. **MAttn Health (`m_attn_health` & `m_attn_health_multi`)**: Attention-based models with health monitoring features.
-7. **RTF Cannie (`rtf_cannie`)**
-8. **RTF Bert (`rtf_bert`)**
+1. **Binary MalConv (`binary_malconv`)**: Raw-byte CNN architecture for binary malware detection (2 MB window).
+2. **Multiclass MalConv (`malconv`)**: Raw-byte CNN architecture with DeCov regularization for multiclass family classification (2 MB window).
+3. **SeqConvAttn (`seqconvattn`)**: Raw-byte convolutional and 3-layer Transformer self-attention network (400 KB window).
+4. **IMCFN (`imcfn`)**: Image-based VGG-16 fine-tuned convolutional network over $224 \times 224 \times 3$ jet-colormapped byte visualizations.
+5. **MultiView CNN (`multiview_cnn`)**: Binary multi-view feature fusion 1D-CNN combining PE headers, opcodes, APIs, and bytes (2,128-d fused vector).
+6. **Binary M-Attn-Health (`m_attn_health`)**: Binary 5-branch multi-view attention network over static PE, dynamic API, and image views.
+7. **Multiclass M-Attn-Health (`m_attn_health_multi`)**: Multiclass 5-branch multi-view attention network (also used as an independent architecture for the local surrogate).
+8. **RTF-CANINE (`rtf_cannie`)**: Ensemble of 10 character-level CANINE-S Transformer classifiers (max 2,048 characters).
+9. **RTF-BERT (`rtf_bert`)**: Ensemble of 6 tokenized BERT Transformer classifiers (max 512 tokens).
 
 ## Quickstart
 

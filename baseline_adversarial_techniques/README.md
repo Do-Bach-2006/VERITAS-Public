@@ -10,7 +10,7 @@ Each subdirectory within this folder corresponds to a specific baseline evasion 
 - **DQEAF**: Deep Q-Learning for Evasion Attacks Framework. A reinforcement learning approach that learns sequences of functionality-preserving transformations to bypass detection. Detailed in `DQEAF/README.md`.
 - **GAPGAN**: Generative Adversarial Payload GAN. Uses Generative Adversarial Networks to generate evasive payloads that mimic benign software distributions. See `GAPGAN/README.md`.
 - **MAB-malware**: Multi-Armed Bandit approach for malware evasion. Treats the selection of obfuscation actions as a bandit problem to maximize evasion probability. Check `MAB-malware/README.md`.
-- **MalGuise**: A technique focused on synthesizing API sequences to disguise malicious behavior dynamically. Instructions available in `MalGuise/README.md`.
+- **MalGuise**: Monte Carlo Tree Search (MCTS) guided semantics-preserving code and CFG transformations (call-based redividing and semantic NOP insertion) queried against the ACFG-based MAGIC detector. Instructions available in `MalGuise/README.md` and `MalGuise/how-to-run.md`.
 - **OBFU-mal**: A comprehensive framework for malware obfuscation leveraging various structural and behavioral transformations. Refer to `OBFU-mal/README.md` for usage.
 - **gamma**: Implementation of the GAMMA (Genetic Adversarial Malware Modification Algorithm) technique. 
   - *Note:* GAMMA requires the ML server (located in the `baseline_detectors` directory) to be running as its surrogate model. Please see the [GAMMA README](./gamma/README.md) for detailed instructions on starting the server.

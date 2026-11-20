@@ -34,8 +34,6 @@ stored on disk anywhere.
 `Config.get()` should only return the items that were actually in the
 config file.
 
-By: [Tommy Beadle](https://github.com/tbeadle) -> [commit](https://github.com/kevoreilly/CAPEv2/commit/e217139ff6cd1ad8f8e74626af990c1913653d21)
-
 ### Extras - Mostly for devs only
 When jumping between branches is become hard to keep config syncronized.
 So as solution we introduce `CAPE_CD` aka `CAPE Config Directory` env variable.

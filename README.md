@@ -31,9 +31,9 @@ The paper formulates problem-space adversarial malware generation as malware-to-
 
 VERITAS exposes 19 realizable actions across three complementary surfaces:
 
-- **PE structure and metadata**: headers, sections, imports, overlays, metadata, timestamps, packing.
-- **Code and control flow**: instruction rewriting, code randomization, lift-transform-recompile artifacts, call-edge redividing, semantic-NOP insertion.
-- **Runtime-observable behavior**: observable API footprint modification through lightweight redirection logic.
+- **PE structure and metadata (11 actions)**: headers, DOS stub, sections, imports, overlays, certificate/debug directories, checksums, and timestamps.
+- **Code, control flow, and whole-binary transformations (7 actions)**: instruction rewriting, code randomization, lift-transform-recompile artifacts (RetDec + OLLVM), call-edge redividing, semantic-NOP insertion, external packing (UPX), and encryption loaders (Darkarmour).
+- **Runtime-observable behavior (1 action)**: observable API footprint modification through lightweight trampoline redirection logic.
 
 The framework separates executable evolution from policy-state admission, ensuring that only validity-qualified candidate representations influence the adversarial policy while retaining validity failures as learning feedback.
 
@@ -111,18 +111,18 @@ The surviving, fully functional adversarial samples undergo a final assessment.
 
 ## Note on this Repository
 
-This repository represents a refactored, beautified, and generalized version of the codebase we used during our testing. It is provided for reference and architectural understanding, and may not represent the exact 1-to-1 code executed during all raw experimental runs.
+This repository provides the complete modular implementation of the VERITAS framework (`proposed/`), the reproduced problem-space adversarial baselines (`baseline_adversarial_techniques/`), the nine learning-based and three operational target detector integrations (`baseline_detectors/`), and the multi-validator operational preservation evaluation suite (`integrity_functionaltiy_evaluating_codes/` and `detector_evaluaion/`).
 
-The primary purpose of this repository is to showcase and evaluate our proposed technique (`proposed/`). All other adversarial techniques (`baseline_adversarial_techniques/`) and detectors (`baseline_detectors/`) are included strictly as comparators to establish a baseline.
+The primary purpose of this repository is to showcase and evaluate our proposed technique (`proposed/`). All other adversarial techniques (`baseline_adversarial_techniques/`) and detectors (`baseline_detectors/`) are included as comparators to support reproducible benchmark evaluation.
 
 For specific execution instructions, environment setups, and configuration options for any component, please navigate to its respective directory and consult the local `README.md`.
 
 ## Main Results Summary
 
-- VERITAS achieves a mean validity-conditioned attack success rate of 23.13% across nine held-out learning-based detectors, outperforming baselines.
-- Transferability: VERITAS variants optimized against a single surrogate achieve 23.16% Valid-ASR against ClamAV and 14.89% against Microsoft Defender.
-- Broad Transformation Coverage: Exposes 19 realizable actions across PE structure, code/CFG, and API behavior, maximizing evasion success against diverse detectors.
-- Functionality Preservation: Uses robust dynamic/static trace alignment and fail-closed state-admission to guarantee that the adversarial samples retain operational validity and intended malicious functionality.
+- **Generation Coverage & Operational Validity**: Finalizes valid variants for 1,203 of 1,794 holdout malware samples (**67.06% Generation Coverage**) with **100.00%** joint operational validity ($V_{\mathrm{VER}}$).
+- **Cross-Detector Attack Effectiveness**: Achieves an unweighted mean validity-conditioned attack success rate ($\mathrm{V\mbox{-}ASR}^{\mathrm{VER}}$) of **23.13%** across nine held-out learning-based detectors (leading on five targets and reaching **73.05%** on RTF-BERT, **37.17%** on multiclass M-Attn-Health, **34.47%** on binary M-Attn-Health, **15.37%** on multiclass MalConv, and **13.90%** on MultiView CNN).
+- **Operational Transferability**: Variants optimized against a single local surrogate transfer without target feedback, achieving **23.16%** $\mathrm{V\mbox{-}ASR}^{\mathrm{VER}}$ against ClamAV and **14.89%** against Microsoft Defender (**19.03%** standalone engine mean) and a **16.42%** mean across VirusTotal TER thresholds (10%–80%).
+- **Low Transformation Burden**: Averages **1.39 transformation steps** (maximum 5) and **51.89% executable-size growth**, compared with 321.21% for GAMMA and 901.52% for OBFU-mal.
 
 ## Authors / Maintainers
 
